@@ -25,20 +25,19 @@ router.post('/', authMiddleware, async (req, res) => {
     return res.sendStatus(201);
 });
 
-router.get('/', authMiddleware, async (req, res) => {
-    const {postId} = req.body;
-    const comments = await CommentDAO.getAll(postId);
+router.get('/:postId', authMiddleware, async (req, res) => {
+    const comments = await CommentDAO.getAll(req.params.postId);
     return res.status(200).send(comments);
 });
 
-router.get('/:id', authMiddleware, async (req, res) => {
-    const comment = await CommentDAO.getById(req.params.id);
+router.get('/:postId/:commentId', authMiddleware, async (req, res) => {
+    const comment = await CommentDAO.getById(req.params.commentId);
     return res.status(200).send(comment);
 });
 
-router.put('/:id', authMiddleware, async (req, res) => {
+router.put('/:postId/:commentId', authMiddleware, async (req, res) => {
     const {description} = req.body;
-    const comment = await CommentDAO.edit(req.params.id, description);
+    const comment = await CommentDAO.edit(req.params.commentId, description);
     return res.status(201).send(comment);
 });
 
