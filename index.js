@@ -21,6 +21,9 @@ app.use((req, res, next) => {
     next();
 });
 
+// Enable cors
+app.use(cors());
+
 // Use the user routes
 app.use('/', userRoutes);
 
@@ -29,9 +32,6 @@ app.use('/posts', postRoutes);
 
 // Use the comment routes
 app.use('/comments', commentRoutes);
-
-// Enable cors
-app.use(cors());
 
 // Connect to the DB
 mongoose.connect(process.env.MONGO_CONNECT_URI).then(() => {
