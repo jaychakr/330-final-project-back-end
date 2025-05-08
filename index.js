@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const userRoutes = require('./routes/users');
 const postRoutes = require('./routes/posts');
 const commentRoutes = require('./routes/comments');
+const cors = require('cors');
 
 if (!process.env.JWT_SECRET) {
     throw new Error('JWT_SECRET env var not provided');
@@ -28,6 +29,9 @@ app.use('/posts', postRoutes);
 
 // Use the comment routes
 app.use('/comments', commentRoutes);
+
+// Enable cors
+app.use(cors());
 
 // Connect to the DB
 mongoose.connect(process.env.MONGO_CONNECT_URI).then(() => {
