@@ -7,7 +7,12 @@ module.exports.create = async (userId, description) => {
     return post;
 }
 
-module.exports.getAll = async (userId) => {
+module.exports.getAll = async () => {
+    const posts = await Post.find({});
+    return posts;
+}
+
+module.exports.getAllByUser = async (userId) => {
     const posts = await Post.find({userId});
     return posts;
 }

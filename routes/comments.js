@@ -25,12 +25,12 @@ router.post('/', authMiddleware, async (req, res) => {
     return res.sendStatus(201);
 });
 
-router.get('/:postId', authMiddleware, async (req, res) => {
+router.get('/:postId', async (req, res) => {
     const comments = await CommentDAO.getAll(req.params.postId);
     return res.status(200).send(comments);
 });
 
-router.get('/:postId/:commentId', authMiddleware, async (req, res) => {
+router.get('/:postId/:commentId', async (req, res) => {
     const comment = await CommentDAO.getById(req.params.commentId);
     return res.status(200).send(comment);
 });

@@ -25,12 +25,17 @@ router.post('/', authMiddleware, async (req, res) => {
     return res.sendStatus(201);
 });
 
-router.get('/:userId', authMiddleware, async (req, res) => {
-    const posts = await PostDAO.getAll(req.params.userId);
+router.get('/', async (req, res) => {
+    const posts = await PostDAO.getAll();
     return res.status(200).send(posts);
 });
 
-router.get('/:userId/:postId', authMiddleware, async (req, res) => {
+router.get('/:userId', async (req, res) => {
+    const posts = await PostDAO.getAllByUser(req.params.userId);
+    return res.status(200).send(posts);
+});
+
+router.get('/:userId/:postId', async (req, res) => {
     const post = await PostDAO.getById(req.params.postId);
     return res.status(200).send(post);
 });
