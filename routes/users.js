@@ -22,7 +22,15 @@ const authMiddleware = (req, res, next) => {
 router.post('/signup', async (req, res) => {
     const {username, email, password} = req.body;
     const user = await UserDAO.create(username, email, password);
-    return res.sendStatus(201);
+    if (!user) {
+        return res.sendStatus(401);
+    }
+    const token = jwt.sign({
+        username: user.username,
+        userId: user._id,
+        roles: user.roles,
+    }, process.env.JWT_SECRET, {expiresIn: '300m'});
+    return res.status(201).send({token});
 });
 
 router.post('/login', async (req, res) => {

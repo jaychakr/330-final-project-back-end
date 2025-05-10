@@ -10,6 +10,7 @@ const commentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "posts",
     required: true,
+    index: true
   },
   description: { type: String, required: true }
 });
