@@ -19,6 +19,17 @@ const authMiddleware = (req, res, next) => {
     }
 }
 
+router.get('/details/:userId', async (req, res) => {
+    const user = await UserDAO.findById(req.params.userId);
+    if (!user) {
+        return res.sendStatus(401);
+    }
+    return res.status(201).send({
+        username: user.username,
+        bio: user.bio
+    });
+})
+
 router.post('/signup', async (req, res) => {
     const {username, email, password} = req.body;
     const user = await UserDAO.create(username, email, password);

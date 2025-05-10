@@ -3,6 +3,11 @@ const User = require('../models/user');
 
 module.exports = {};
 
+module.exports.findById = async (userId) => {
+    const user = await User.findOne({_id: userId});
+    return user;
+}
+
 module.exports.create = async (username, email, plaintextPassword) => {
     const hashedPassword = await bcrypt.hash(plaintextPassword, 10);
     const user = await User.create({username, email, password: hashedPassword});
