@@ -22,18 +22,12 @@ app.use((req, res, next) => {
 app.use(cors());
 
 // Use the user routes
-app.use('/api', userRoutes);
+app.use('/', userRoutes);
 
 // Use the post routes
-app.use('/api/posts', postRoutes);
+app.use('/posts', postRoutes);
 
 // Use the comment routes
-app.use('/api/comments', commentRoutes);
-
-app.use(express.static(__dirname + '/330-final-project-front-end/dist'));
-
-app.get('*', function(req, res) {
-  res.sendFile(__dirname + '/330-final-project-front-end/dist/index.html');
-});
+app.use('/comments', commentRoutes);
 
 module.exports = app;
