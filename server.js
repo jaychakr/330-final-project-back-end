@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 app.use(cors());
 
 // Use the user routes
-app.use('/api/', userRoutes);
+app.use('/api', userRoutes);
 
 // Use the post routes
 app.use('/api/posts', postRoutes);
