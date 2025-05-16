@@ -20,8 +20,8 @@ const authMiddleware = (req, res, next) => {
 }
 
 router.post('/', authMiddleware, async (req, res) => {
-    const {description} = req.body;
-    const post = await PostDAO.create(req.user.userId, description);
+    const {description, fileType} = req.body;
+    const post = await PostDAO.create(req.user.userId, description, fileType);
     return res.status(201).send(post);
 });
 

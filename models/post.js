@@ -7,7 +7,8 @@ const postSchema = new mongoose.Schema({
     required: true,
     index: true
   },
-  description: { type: String, required: true }
+  description: { type: String, required: true },
+  fileType: { type: String, required: true }
 });
 
 module.exports = mongoose.model("posts", postSchema);
