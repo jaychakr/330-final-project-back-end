@@ -21,8 +21,8 @@ const authMiddleware = (req, res, next) => {
 
 router.post('/', authMiddleware, async (req, res) => {
     const {postId, description} = req.body;
-    const post = await CommentDAO.create(req.user.userId, postId, description);
-    return res.sendStatus(201);
+    const comment = await CommentDAO.create(req.user.userId, postId, description);
+    return res.status(201).send(comment);
 });
 
 router.get('/:postId', async (req, res) => {
