@@ -9,6 +9,7 @@ const postSchema = new mongoose.Schema({
   },
   description: { type: String, required: true },
   fileType: { type: String, required: true },
+}, {
   timestamps: true
 });
 
