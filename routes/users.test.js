@@ -18,11 +18,11 @@ describe("/order", () => {
   });
 
   test('POST /users/login', async () => {
-        await request(app).post('/signup').send({email: 'user0b@test.com', username: 'hagueb', password: 'password'}).expect(201);
+        await request(app).post('/signup').send({email: 'user0@test.com', username: 'user0', password: 'password'}).expect(201);
 
         return request(app)
             .post('/login')
-            .send({email: 'user0@test.com', username: 'hagueb', password: 'password'})
+            .send({email: 'user0@test.com', username: 'user0', password: 'password'})
             .expect(200);
   });
 });
