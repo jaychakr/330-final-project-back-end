@@ -3,7 +3,11 @@ const express = require('express');
 const userRoutes = require('./routes/users');
 const postRoutes = require('./routes/posts');
 const commentRoutes = require('./routes/comments');
+const messageRoutes = require('./routes/messages');
 const cors = require('cors');
+const { Server } = require("socket.io");
+const http = require("http");
+const ChatMessage = require("./models/ChatMessage");
 
 if (!process.env.JWT_SECRET) {
     throw new Error('JWT_SECRET env var not provided');
@@ -30,4 +34,46 @@ app.use('/posts', postRoutes);
 // Use the comment routes
 app.use('/comments', commentRoutes);
 
-module.exports = app;
+// Use the message routes
+app.use('/messages', messageRoutes);
+
+// Create HTTP server
+const server = http.createServer(app);
+
+// Initialize Socket.IO
+const io = new Server(server, {
+	cors: {
+		origin: "*",
+		methods: ["GET", "POST"],
+	},
+});
+
+// Socket.IO Connection
+io.on("connection", (socket) => {
+	console.log(`User connected: ${socket.id}`);
+	socket.on("disconnect", () => {
+		console.log(`User disconnected: ${socket.id}`);
+	});
+	socket.on("chat message", async (msg) => {
+		console.log("message: " + msg);
+		io.emit("chat message", msg);
+		try {
+			const { user, message } = msg;
+			if (!user || !message) {
+				console.error("User and message are required");
+				return;
+			}
+			const chatMessage = new ChatMessage({
+				user,
+				message,
+			});
+			await chatMessage.save();
+			console.log("Message saved to database");
+		} catch (error) {
+			console.error("Error saving message:", error);
+		}
+	});
+});
+
+//module.exports = app;
+module.exports = server;
