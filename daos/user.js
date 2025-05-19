@@ -8,6 +8,11 @@ module.exports.findById = async (userId) => {
     return user;
 }
 
+module.exports.findByUsername = async (username) => {
+    const user = await User.findOne({username: username});
+    return user;
+}
+
 module.exports.create = async (username, email, plaintextPassword) => {
     const hashedPassword = await bcrypt.hash(plaintextPassword, 10);
     const user = await User.create({username, email, password: hashedPassword});
