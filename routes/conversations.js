@@ -1,6 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const ConversationDAO = require('../daos/comment');
+const ConversationDAO = require('../daos/conversation');
 const UserDAO = require('../daos/user');
 
 const router = express.Router();
@@ -23,6 +23,9 @@ const authMiddleware = (req, res, next) => {
 router.post('/', authMiddleware, async (req, res) => {
     const {username} = req.body;
     const recipient = UserDAO.findByUsername(username);
+    if (!recipient) {
+        res.sendStatus(400);
+    }
     const conversation = await ConversationDAO.create(req.user.userId, recipient._id);
     return res.status(201).send(conversation);
 });
