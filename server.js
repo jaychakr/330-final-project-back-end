@@ -3,6 +3,7 @@ const express = require('express');
 const userRoutes = require('./routes/users');
 const postRoutes = require('./routes/posts');
 const commentRoutes = require('./routes/comments');
+const conversationRoutes = require('./routes/conversations');
 const messageRoutes = require('./routes/messages');
 const cors = require('cors');
 const { Server } = require("socket.io");
@@ -33,6 +34,9 @@ app.use('/posts', postRoutes);
 
 // Use the comment routes
 app.use('/comments', commentRoutes);
+
+// Use the conversation routes
+app.use('/conversations', conversationRoutes);
 
 // Use the message routes
 app.use('/messages', messageRoutes);
