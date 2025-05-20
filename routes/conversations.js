@@ -26,7 +26,10 @@ router.post('/', authMiddleware, async (req, res) => {
     if (!recipient) {
         res.sendStatus(400);
     }
-    const conversation = await ConversationDAO.create(req.user.userId, recipient._id);
+    const conversation = await ConversationDAO.create({
+        userId1: req.user.userId,
+        userId2: recipient._id
+    });
     return res.status(201).send(conversation);
 });
 
