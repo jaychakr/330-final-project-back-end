@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require("mongoose");
 const jwt = require('jsonwebtoken');
 const ConversationDAO = require('../daos/conversation');
 const UserDAO = require('../daos/user');
@@ -22,14 +23,11 @@ const authMiddleware = (req, res, next) => {
 
 router.post('/', authMiddleware, async (req, res) => {
     const {username} = req.body;
-    const recipient = UserDAO.findByUsername(username);
+    const recipient = await UserDAO.findByUsername(username);
     if (!recipient) {
-        res.sendStatus(400);
+        return res.sendStatus(400);
     }
-    const conversation = await ConversationDAO.create({
-        userId1: req.user.userId,
-        userId2: recipient._id
-    });
+    const conversation = await ConversationDAO.create(req.user.userId, recipient._id);
     return res.status(201).send(conversation);
 });
 
@@ -37,6 +35,5 @@ router.get('/:userId', authMiddleware, async (req, res) => {
     const conversations = await ConversationDAO.findAllById(req.params.userId);
     return res.status(200).send(conversations);
 });
-
 
 module.exports = router;
