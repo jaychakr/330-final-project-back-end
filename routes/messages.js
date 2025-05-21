@@ -14,4 +14,14 @@ router.get("/", async (req, res) => {
 	}
 });
 
+router.get("/:conversationId", async (req, res) => {
+	try {
+		const messages = await ChatMessage.find({conversationId: req.params.conversationId});
+		res.json(messages);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+});
+
 module.exports = router;

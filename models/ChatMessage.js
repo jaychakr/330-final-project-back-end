@@ -3,6 +3,12 @@ const mongoose = require('mongoose');
 const chatMessageSchema = new mongoose.Schema({
 	user: { type: String, required: true },
 	message: { type: String, required: true },
+	conversationId: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "conversations",
+		required: true,
+		index: true
+	},
 	timestamp: { type: Date, default: Date.now },
 });
 
