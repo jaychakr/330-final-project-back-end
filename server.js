@@ -62,14 +62,15 @@ io.on("connection", (socket) => {
 		console.log("message: " + msg);
 		io.emit("chat message", msg);
 		try {
-			const { user, message } = msg;
-			if (!user || !message) {
-				console.error("User and message are required");
+			const { user, message, conversationId } = msg;
+			if (!user || !message || !conversationId) {
+				console.error("User, message, and conversationId are required");
 				return;
 			}
 			const chatMessage = new ChatMessage({
 				user,
 				message,
+				conversationId
 			});
 			await chatMessage.save();
 			console.log("Message saved to database");
