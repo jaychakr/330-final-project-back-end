@@ -3,6 +3,8 @@ Project is set up with mongoose connection and running express server. Testing i
 
 The routes, DAOs, and models for conversations and messages have not been written yet. I am considering whether or not I want to include that portion of the project since it may require Socket.IO for real-time functionality. The posts and comments CRUD routes I have already completed meet the project requirement for 2 sets of CRUD routes (not counting authentication). I also need to write the actual tests in users.test.js, posts.test.js, and comments.tests.js. I have confirmed that connectDB, stopDB, and clearDB from test-utils.js are working as expected. I have indexes in my post and comment schemas but still need to set up one of text search, aggregations, or lookups. I may implement text search by creating a feature in which you can search for users by username, or search for posts containing a certain keyword in its description. While the current front-end allows you to create a new user, login, post, and comment, I still need to setup the front-end to allow for post and comment editing and deletion for logged in users. I also need to create an admin user that will be authorized to delete any post or comment.
 
+Update: The routes for conversations and messages are complete with real-time functionality using socket.io in the express server and socket.io-client in the react app. Still working to set up individual conversation pages.
+
 ## Proposal and Task Breakdown
 ### Your Final Project proposal is due. You should submit a link to a GitHub project that will house your submission. The project README should contain your project proposal. Your proposal should include:
 
