@@ -19,7 +19,7 @@ const app = express();
 app.use(express.json());
 
 app.use((req, res, next) => {
-    console.log(`${req.method} ${req.path} - ${new Date()}`);
+    // console.log(`${req.method} ${req.path} - ${new Date()}`);
     next();
 });
 
@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 app.use(cors());
 
 // Use the user routes
-app.use('/', userRoutes);
+app.use('/auth', userRoutes);
 
 // Use the post routes
 app.use('/posts', postRoutes);

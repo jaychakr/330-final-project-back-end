@@ -4,21 +4,6 @@ const UserDAO = require('../daos/user');
 
 const router = express.Router();
 
-const authMiddleware = (req, res, next) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-        return res.sendStatus(401);
-    }
-    const token = authHeader.split(' ')[1];
-    try {
-        const user = jwt.verify(token, 'secret');
-        req.user = user;
-        next();
-    } catch (error) {
-        return res.sendStatus(401);
-    }
-}
-
 router.get('/details/:userId', async (req, res) => {
     const user = await UserDAO.findById(req.params.userId);
     if (!user) {
@@ -32,36 +17,62 @@ router.get('/details/:userId', async (req, res) => {
 
 router.post('/signup', async (req, res) => {
     const {username, email, password} = req.body;
-    const user = await UserDAO.create(username, email, password);
-    if (!user) {
-        return res.sendStatus(401);
+    if (!password) {
+        return res.status(400).send('should return 400 without a password');
+    } else if (!password.length) {
+        return res.status(400).send('should return 400 with empty password');
     }
-    const token = jwt.sign({
-        username: user.username,
-        userId: user._id,
-        roles: user.roles,
-    }, process.env.JWT_SECRET, {expiresIn: '300m'});
-    return res.status(201).send({token});
+    try {
+        const user = await UserDAO.create(username, email, password);
+        const token = jwt.sign({
+            username: user.username,
+            email: user.email,
+            userId: user._id,
+            _id: user._id,
+            roles: user.roles,
+    }, 'secret', {expiresIn: '30m'});
+        return res.status(200).send({token});
+    } catch (e) {
+        return res.status(409).send('should return 409 conflict with repeat signup');
+    }
 });
 
 router.post('/login', async (req, res) => {
     const {username, password} = req.body;
+    if (!password) {
+        return res.status(400).send('should return 400 when password isn\'t provided');
+    }
     const user = await UserDAO.login(username, password);
     if (!user) {
-        return res.sendStatus(401);
+        return res.status(401).send('should return 401 when password doesn\'t match');
     }
     const token = jwt.sign({
         username: user.username,
+        email: user.email,
         userId: user._id,
+        _id: user._id,
         roles: user.roles,
-    }, process.env.JWT_SECRET, {expiresIn: '300m'});
+    }, 'secret', {expiresIn: '30m'});
     return res.send({token});
 });
 
-router.patch('/changePassword', authMiddleware, async (req, res) => {
-    const loggedInUserId = req.user.userId;
-    await UserDAO.changePassword(loggedInUserId, req.body.password);
-    return res.sendStatus(200);
+router.put('/password', async (req, res) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+        return res.status(401).send('should return 401 before signup');
+    }
+    const {password} = req.body;
+    if (!password) {
+        return res.status(400).send('should reject empty password');
+    }
+    const token = authHeader.split(' ')[1];
+    try {
+        const user = jwt.verify(token, 'secret');
+        await UserDAO.changePassword(user._id, password);
+        return res.status(200).send('should change password');
+    } catch (error) {
+        return res.status(401).send('should reject bogus token');
+    }
 });
 
 module.exports = router;
