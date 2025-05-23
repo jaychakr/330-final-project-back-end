@@ -24,6 +24,14 @@ module.exports.changePassword = async (userId, plaintextPassword) => {
     await User.updateOne({_id: userId}, {password: hashedPassword});
 }
 
+module.exports.changeBio = async (userId, bio) => {
+    await User.updateOne({_id: userId}, {bio: bio});
+}
+
+module.exports.changeUsername = async (userId, newUsername) => {
+    await User.updateOne({_id: userId}, {username: newUsername});
+}
+
 module.exports.login = async (username, plaintextPassword) => {
     const user = await User.findOne({username});
     if (!user) {

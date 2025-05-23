@@ -38,6 +38,20 @@ describe("/auth", () => {
       });
     });
 
+    describe("PUT /username", () => {
+      it("should return 401", async () => {
+        const res = await request(server).put("/auth/username").send(user0);
+        expect(res.statusCode).toEqual(401);
+      });
+    });
+
+    describe("PUT /bio", () => {
+      it("should return 401", async () => {
+        const res = await request(server).put("/auth/bio").send(user0);
+        expect(res.statusCode).toEqual(401);
+      });
+    });
+
     describe("POST /logout", () => {
       it("should return 404", async () => {
         const res = await request(server).post("/auth/logout").send();
@@ -158,11 +172,43 @@ describe("/auth", () => {
         expect(res.statusCode).toEqual(401);
       });
 
+      it("should reject bogus token", async () => {
+        const res = await request(server)
+          .put("/auth/username")
+          .set("Authorization", "Bearer BAD")
+          .send({ username: "123" });
+        expect(res.statusCode).toEqual(401);
+      });
+
+      it("should reject bogus token", async () => {
+        const res = await request(server)
+          .put("/auth/bio")
+          .set("Authorization", "Bearer BAD")
+          .send({ bio: "123" });
+        expect(res.statusCode).toEqual(401);
+      });
+
       it("should reject empty password", async () => {
         const res = await request(server)
           .put("/auth/password")
           .set("Authorization", "Bearer " + token0)
           .send({ password: "" });
+        expect(res.statusCode).toEqual(400);
+      });
+
+      it("should reject empty username", async () => {
+        const res = await request(server)
+          .put("/auth/username")
+          .set("Authorization", "Bearer " + token0)
+          .send({ username: "" });
+        expect(res.statusCode).toEqual(400);
+      });
+
+      it("should reject empty bio", async () => {
+        const res = await request(server)
+          .put("/auth/bio")
+          .set("Authorization", "Bearer " + token0)
+          .send({ bio: "" });
         expect(res.statusCode).toEqual(400);
       });
 
@@ -201,6 +247,27 @@ describe("/auth", () => {
         });
         expect(loginRes1.statusCode).toEqual(200);
       });
+
+      it("should change username for user0", async () => {
+        const res = await request(server)
+          .put("/auth/username")
+          .set("Authorization", "Bearer " + token0)
+          .send({ username: "123" });
+        expect(res.statusCode).toEqual(200);
+        const newUser = await User.findOne({email: user0.email}).lean();
+        expect(newUser.username).toEqual("123");
+      });
+
+      it("should change bio for user0", async () => {
+        const res = await request(server)
+          .put("/auth/bio")
+          .set("Authorization", "Bearer " + token0)
+          .send({ bio: "123" });
+        expect(res.statusCode).toEqual(200);
+        const newUser = await User.findOne({email: user0.email}).lean();
+        expect(newUser.bio).toEqual("123");
+      });
+
     });
   });
 });
