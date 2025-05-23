@@ -3,6 +3,7 @@ var jwt = require("jsonwebtoken");
 
 const server = require("../server");
 const testUtils = require("../test-utils");
+const { jwtDecode } = require('jwt-decode');
 
 const User = require("../models/user");
 
@@ -22,6 +23,32 @@ describe("/auth", () => {
     email: "user1@mail.com",
     password: "456password",
   };
+
+  describe("get user details", () => {
+    describe("GET /details/:userId", () => {
+      it("should return 200", async () => {
+        const signup = await request(server).post("/auth/signup").send(user0);
+        const user = jwtDecode(signup.body.token);
+        const res = await request(server).get("/auth/details/" + user.userId).send();
+        expect(res.statusCode).toEqual(200);
+        expect(res.body.username).toEqual(user0.username);
+      });
+    });
+
+    describe("should reject invalid userId", () => {
+      it("should return 400", async () => {
+        const res = await request(server).get("/auth/details/123").send();
+        expect(res.statusCode).toEqual(400);
+      });
+    });
+
+    describe("should reject bogus userId", () => {
+      it("should return 404", async () => {
+        const res = await request(server).get("/auth/details/507f1f77bcf86cd799439011").send();
+        expect(res.statusCode).toEqual(404);
+      });
+    });
+  });
 
   describe("before signup", () => {
     describe("POST /", () => {

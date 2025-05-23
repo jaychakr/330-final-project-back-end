@@ -5,11 +5,14 @@ const UserDAO = require('../daos/user');
 const router = express.Router();
 
 router.get('/details/:userId', async (req, res) => {
+    if (req.params.userId.length !== 24) {
+        return res.status(400).send('should return 400 with invalid userId');
+    }
     const user = await UserDAO.findById(req.params.userId);
     if (!user) {
-        return res.sendStatus(401);
+        return res.sendStatus(404).send('should return 404 with bogus userId');
     }
-    return res.status(201).send({
+    return res.send({
         username: user.username,
         bio: user.bio
     });
