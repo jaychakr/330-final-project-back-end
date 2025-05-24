@@ -7,8 +7,8 @@ module.exports.create = async (userId, description, fileType) => {
     return post;
 }
 
-module.exports.getAll = async () => {
-    const posts = await Post.find({}).sort({ updatedAt: -1 });
+module.exports.getAll = async (skip, limit) => {
+    const posts = await Post.find({}).sort({ updatedAt: -1 }).skip(skip).limit(limit);
     return posts;
 }
 

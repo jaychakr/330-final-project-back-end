@@ -26,7 +26,9 @@ router.post('/', authMiddleware, async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-    const posts = await PostDAO.getAll();
+    const skip = parseInt(req.query.skip) || 0;
+    const limit = parseInt(req.query.limit) || 3;
+    const posts = await PostDAO.getAll(skip, limit);
     return res.status(200).send(posts);
 });
 
