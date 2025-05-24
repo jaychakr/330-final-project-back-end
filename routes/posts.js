@@ -30,13 +30,13 @@ router.get('/', async (req, res) => {
     return res.status(200).send(posts);
 });
 
-router.get('/:userId', async (req, res) => {
-    const posts = await PostDAO.getAllByUser(req.params.userId);
+router.get('/search/:keyword', async (req, res) => {
+    const posts = await PostDAO.getAllByKeyword(req.params.keyword);
     return res.status(200).send(posts);
 });
 
-router.get('/search/:keyword', async (req, res) => {
-    const posts = await PostDAO.getAllByKeyword(req.params.keyword);
+router.get('/:userId', async (req, res) => {
+    const posts = await PostDAO.getAllByUser(req.params.userId);
     return res.status(200).send(posts);
 });
 
