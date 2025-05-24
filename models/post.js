@@ -7,7 +7,7 @@ const postSchema = new mongoose.Schema({
     required: true,
     index: true
   },
-  description: { type: String, required: true },
+  description: { type: String, required: true, index: 'text' },
   fileType: { type: String, required: true },
 }, {
   timestamps: true

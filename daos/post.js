@@ -12,6 +12,11 @@ module.exports.getAll = async () => {
     return posts;
 }
 
+module.exports.getAllByKeyword = async (keyword) => {
+    const posts = await Post.find({ $text: { $search: keyword } }).sort({ updatedAt: -1 });
+    return posts;
+}
+
 module.exports.getAllByUser = async (userId) => {
     const posts = await Post.find({userId});
     return posts;

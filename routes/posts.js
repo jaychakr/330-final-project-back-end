@@ -35,6 +35,11 @@ router.get('/:userId', async (req, res) => {
     return res.status(200).send(posts);
 });
 
+router.get('/search/:keyword', async (req, res) => {
+    const posts = await PostDAO.getAllByKeyword(req.params.keyword);
+    return res.status(200).send(posts);
+});
+
 router.get('/:userId/:postId', async (req, res) => {
     const post = await PostDAO.getById(req.params.postId);
     return res.status(200).send(post);

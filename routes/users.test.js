@@ -3,7 +3,6 @@ var jwt = require("jsonwebtoken");
 
 const server = require("../server");
 const testUtils = require("../test-utils");
-const { jwtDecode } = require('jwt-decode');
 
 const User = require("../models/user");
 
@@ -28,7 +27,7 @@ describe("/auth", () => {
     describe("GET /details/:userId", () => {
       it("should return 200", async () => {
         const signup = await request(server).post("/auth/signup").send(user0);
-        const user = jwtDecode(signup.body.token);
+        const user = jwt.decode(signup.body.token);
         const res = await request(server).get("/auth/details/" + user.userId).send();
         expect(res.statusCode).toEqual(200);
         expect(res.body.username).toEqual(user0.username);
