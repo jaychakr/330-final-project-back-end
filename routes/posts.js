@@ -37,23 +37,23 @@ router.get('/search/:keyword', async (req, res) => {
     return res.status(200).send(posts);
 });
 
-router.get('/:userId', async (req, res) => {
+router.get('/byUserId/:userId', async (req, res) => {
     const posts = await PostDAO.getAllByUser(req.params.userId);
     return res.status(200).send(posts);
 });
 
-router.get('/:userId/:postId', async (req, res) => {
+router.get('/byPostId/:postId', async (req, res) => {
     const post = await PostDAO.getById(req.params.postId);
     return res.status(200).send(post);
 });
 
-router.put('/:userId/:postId', authMiddleware, async (req, res) => {
+router.put('/byPostId/:postId', authMiddleware, async (req, res) => {
     const {description} = req.body;
     const post = await PostDAO.edit(req.params.postId, description);
-    return res.status(201).send(post);
+    return res.status(200).send(post);
 });
 
-router.delete('/:id', authMiddleware, async (req, res) => {
+router.delete('/byPostId/:id', authMiddleware, async (req, res) => {
     await PostDAO.delete(req.params.id);
     return res.sendStatus(204);
 });
