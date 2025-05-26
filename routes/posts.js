@@ -53,8 +53,8 @@ router.put('/byPostId/:postId', authMiddleware, async (req, res) => {
     return res.status(200).send(post);
 });
 
-router.delete('/byPostId/:id', authMiddleware, async (req, res) => {
-    await PostDAO.delete(req.params.id);
+router.delete('/byPostId/:postId', authMiddleware, async (req, res) => {
+    await PostDAO.delete(req.params.postId);
     return res.sendStatus(204);
 });
 
