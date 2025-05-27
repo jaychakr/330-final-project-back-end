@@ -62,13 +62,14 @@ io.on("connection", (socket) => {
 		console.log("message: " + msg);
 		io.emit("chat message", msg);
 		try {
-			const { user, message, conversationId } = msg;
+			const { user, userId, message, conversationId } = msg;
 			if (!user || !message || !conversationId) {
 				console.error("User, message, and conversationId are required");
 				return;
 			}
 			const chatMessage = new ChatMessage({
 				user,
+				userId,
 				message,
 				conversationId
 			});
