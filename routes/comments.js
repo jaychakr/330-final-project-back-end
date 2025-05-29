@@ -30,19 +30,19 @@ router.get('/:postId', async (req, res) => {
     return res.status(200).send(comments);
 });
 
-router.get('/:postId/:commentId', async (req, res) => {
+router.get('/byCommentId/:commentId', async (req, res) => {
     const comment = await CommentDAO.getById(req.params.commentId);
     return res.status(200).send(comment);
 });
 
-router.put('/:postId/:commentId', authMiddleware, async (req, res) => {
+router.put('/byCommentId/:commentId', authMiddleware, async (req, res) => {
     const {description} = req.body;
     const comment = await CommentDAO.edit(req.params.commentId, description);
-    return res.status(201).send(comment);
+    return res.status(200).send(comment);
 });
 
-router.delete('/:id', authMiddleware, async (req, res) => {
-    await CommentDAO.delete(req.params.id);
+router.delete('/byCommentId/:commentId', authMiddleware, async (req, res) => {
+    await CommentDAO.delete(req.params.commentId);
     return res.status(204).send('comment deleted!');
 });
 
