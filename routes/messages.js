@@ -3,25 +3,14 @@ const ChatMessage = require("../models/ChatMessage");
 
 const router = express.Router();
 
-// Routes
 router.get("/", async (req, res) => {
-	try {
-		const messages = await ChatMessage.find();
-		res.json(messages);
-	} catch (error) {
-		console.error(error);
-		res.status(500).json({ error: "Internal Server Error" });
-	}
+	const messages = await ChatMessage.find();
+	res.json(messages);
 });
 
 router.get("/:conversationId", async (req, res) => {
-	try {
-		const messages = await ChatMessage.find({conversationId: req.params.conversationId});
-		res.json(messages);
-	} catch (error) {
-		console.error(error);
-		res.status(500).json({ error: "Internal Server Error" });
-	}
+	const messages = await ChatMessage.find({conversationId: req.params.conversationId});
+	res.json(messages);
 });
 
 module.exports = router;

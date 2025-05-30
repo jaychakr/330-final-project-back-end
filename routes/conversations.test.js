@@ -73,12 +73,8 @@ describe("/conversations", () => {
           .send(conversation0);
         expect(res.statusCode).toEqual(201);
         const storedConversation = await Conversation.findOne().lean();
-        const userId1 = new mongoose.Types.ObjectId(jwt.decode(token0).userId);
-        const userId2 = new mongoose.Types.ObjectId(jwt.decode(token1).userId);
-        expect(storedConversation).toMatchObject({
-          userId1: userId1,
-          userId2: userId2,
-        });
+        expect(storedConversation.userId1.toString()).toEqual(jwt.decode(token0).userId);
+        expect(storedConversation.userId2.toString()).toEqual(jwt.decode(token1).userId);
       });
     });
 
