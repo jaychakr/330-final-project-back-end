@@ -32,8 +32,8 @@ router.post('/', authMiddleware, async (req, res) => {
 });
 
 router.get('/:conversationId', authMiddleware, async (req, res) => {
-    const conversations = await ConversationDAO.getById(req.params.conversationId);
-    return res.status(200).send(conversations);
+    const conversation = await ConversationDAO.getById(req.params.conversationId);
+    return res.status(200).send(conversation);
 });
 
 router.get('/byUserId/:userId', authMiddleware, async (req, res) => {
