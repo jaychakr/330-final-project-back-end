@@ -3,7 +3,6 @@ var jwt = require("jsonwebtoken");
 
 const server = require("../server");
 const testUtils = require("../test-utils");
-const mongoose = require("mongoose");
 
 const Conversation = require("../models/conversation");
 
