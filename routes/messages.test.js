@@ -16,6 +16,23 @@ describe("/messages", () => {
   const message1 = { message: "This is Message #1" };
   const message2 = { message: "This is Message #2" };
 
+  describe("Before login", () => {
+    describe("GET /", () => {
+      it("should send 401 without a token", async () => {
+        const res = await request(server).get("/messages").send();
+        expect(res.statusCode).toEqual(401);
+      });
+  
+      it("should send 401 with a bad token", async () => {
+        const res = await request(server)
+          .get("/messages")
+          .set("Authorization", "Bearer BAD")
+          .send();
+        expect(res.statusCode).toEqual(401);
+      });
+    });
+  });
+
   describe("after login", () => {
     const user0 = {
       username: "user0",

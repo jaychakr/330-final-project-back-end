@@ -6,7 +6,6 @@ const router = express.Router();
 const authMiddleware = (req, res, next) => {
 	const authHeader = req.headers.authorization;
 	if (!authHeader) {
-		console.log('test1');
 		return res.sendStatus(401);
 	}
 	const token = authHeader.split(' ')[1];
