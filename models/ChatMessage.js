@@ -13,7 +13,8 @@ const chatMessageSchema = new mongoose.Schema({
 		required: true,
 		index: true
 	},
-	timestamp: { type: Date, default: Date.now },
+}, {
+  timestamps: true
 });
 
 const ChatMessage = mongoose.model('ChatMessage', chatMessageSchema);
