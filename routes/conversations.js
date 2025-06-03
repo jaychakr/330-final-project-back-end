@@ -27,6 +27,10 @@ router.post('/', authMiddleware, async (req, res) => {
     if (!recipient) {
         return res.sendStatus(400);
     }
+    const duplicateConversation = await ConversationDAO.checkForDuplicate(req.user.userId, recipient._id);
+    if (duplicateConversation) {
+        return res.status(201).send(duplicateConversation);
+    }
     const conversation = await ConversationDAO.create(req.user.userId, recipient._id);
     return res.status(201).send(conversation);
 });

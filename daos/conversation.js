@@ -7,6 +7,13 @@ module.exports.create = async (userId1, userId2) => {
     return conversation;
 }
 
+module.exports.checkForDuplicate = async (userId1, userId2) => {
+    const conversation = await Conversation.findOne({
+        $or: [{ userId1: userId1, userId2: userId2 }, { userId1: userId2, userId2: userId1 }]
+    });
+    return conversation;
+}
+
 module.exports.getById = async (conversationId) => {
     const post = await Conversation.findOne({_id: conversationId});
     return post;
